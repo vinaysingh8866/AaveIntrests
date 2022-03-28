@@ -5,6 +5,8 @@ const cAdd = "0x2b2929E785374c651a81A63878Ab22742656DcDd"
 const addressUser = "0x98f9694D9c7b09b8e08B5C827d0D6177eEdD61e9"
 const add = "0xBf60806A6B1a2E2c49DF581D5bE2De90375572e8"
 
+
+
 async function getBal() {
     const provider = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
     let contractFooBoo = new ethers.Contract(cAdd, abi, provider);
