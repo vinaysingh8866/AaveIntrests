@@ -18,6 +18,8 @@ const pId = {
     "wFTM-SUSHI": 10
 }
 
+
+
 async function getBal() {
     const provider = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
     let contractFooBoo = new ethers.Contract(cAdd, abi, provider);
