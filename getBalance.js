@@ -4,6 +4,19 @@ let abi = [{ "inputs": [{ "internalType": "contract SpookyToken", "name": "_boo"
 const cAdd = "0x2b2929E785374c651a81A63878Ab22742656DcDd"
 const addressUser = "0x98f9694D9c7b09b8e08B5C827d0D6177eEdD61e9"
 const add = "0xBf60806A6B1a2E2c49DF581D5bE2De90375572e8"
+const pId = {
+    "FOO-BOO": 0,
+    "fUSDT-FTM": 1,
+    "USDC-FTM": 2,
+    "wFTM-DAI": 3,
+    "wFTM-BTC": 4,
+    "wFTM-ETH": 5,
+    "wFTM-LINK": 6,
+    "wFTM-AAVE": 7,
+    "wFTM-SNX": 8,
+    "wFTM-YFI": 9,
+    "wFTM-SUSHI": 10
+}
 
 async function getBal() {
     const provider = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
