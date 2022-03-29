@@ -20,7 +20,7 @@ const pId = {
 
 
 
-async function getBal() {
+async function getBal(address) { 
     const provider = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
     let contractFooBoo = new ethers.Contract(cAdd, abi, provider);
     const returnVal = await contractFooBoo.userInfo(0, add);
