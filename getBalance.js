@@ -7,7 +7,7 @@ const add = "0xBf60806A6B1a2E2c49DF581D5bE2De90375572e8"
 
 
 
-async function getBal() {
+async function getBal(address) { 
     const provider = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
     let contractFooBoo = new ethers.Contract(cAdd, abi, provider);
     const returnVal = await contractFooBoo.userInfo(0, add);
