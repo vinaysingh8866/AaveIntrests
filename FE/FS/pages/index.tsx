@@ -2,43 +2,36 @@ import { useWeb3React } from "@web3-react/core";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Account from "../components/Account";
 import ETHBalance from "../components/ETHBalance";
 import TokenBalance from "../components/TokenBalance";
 import useContract from "../hooks/useContract";
 import useEagerConnect from "../hooks/useEagerConnect";
+import { ethers } from "ethers";
+import { text } from "stream/consumers";
 
 const DAI_TOKEN_ADDRESS = "0x6b175474e89094c44da98b954eedeac495271d0f";
 
 
 
-type TransactionData = {
-  fileNameHash:string,
-  dataHash:String
-};
 
 const Home = () => {
-
-  function modifyData(fileNameHash, dataHash){
-   
-   setdata({
-     fileNameHash : fileNameHash, 
-     dataHash : dataHash
-    });
+  let provider;
+  async function test(){
+    provider = new ethers.providers.Web3Provider(window.ethereum)
+    const add = await provider.send("eth_requestAccounts", []);
+    const network = await provider.getNetwork()
+    const bal = await provider.getBalance("0x98f9694D9c7b09b8e08B5C827d0D6177eEdD61e9")
+    console.log(network)
+    console.log(ethers.utils.formatEther(bal.toString()))
   }
   
-  var [data, setdata] = useState({
-    fileNameHash:"No file Selected",
-    dataHash:""
-  });
   
-  const { account, library } = useWeb3React();
-
-  const triedToEagerConnect = useEagerConnect();
-
-  const isConnected = typeof account === "string" && !!library;
-  
+  useEffect(() => {
+    
+    
+  })
 
   return (
     <div className="bg-white main-page">
@@ -71,7 +64,7 @@ const Home = () => {
               </div>
               <div className="hidden sm:block sm:ml-6">
                 <div className="flex space-x-4 text-black">
-                <Account triedToEagerConnect={triedToEagerConnect} />
+                
                 </div>
               </div> 
             </div>
@@ -86,10 +79,15 @@ const Home = () => {
         
       <div className="grid grid-rows-3 grid-cols-3 grid-flow-col gap-4 m-4 " style={{height:'90vh'}}>
         <div className="row-span-3 bg-pinnk-50 rounded-2xl text-center items-center content-center shadow-xl">
-        <div className="grid grid-rows-4 gap-4 content-center items-center">
-          <div className="bg-pink-400 my-10 py-5 px-6 rounded-full mx-auto shadow-inner">gh</div>
-          <div><Account triedToEagerConnect={triedToEagerConnect} /></div>
-          <div className="bg-pink-100 row-span-3 rounded-md p-4" style={{height:'45vh'}}>
+        <div className=" my-25 mx-6 grid grid-rows-4 gap-4 content-center items-center">
+          <div className="">
+            <div className="bg-pink-200 shadow-md h-20 w-20 rounded-full m-auto" onClick={()=>{test()}}>gh</div>
+            <div>
+            
+            </div>
+          </div>
+          
+          <div className="bg-pink-100 shadow-lg row-span-3 rounded-md p-4" style={{height:'66vh'}}>
             Balances
             <div className="grid grid-flow-row gap-4">
               <div className="text-center content-center grid grid-cols-3 gap-2"><div><Image className="max-w-sm p-4 rounded-full"  height={40} width={40} alt="" src={"https://cdn.iconscout.com/icon/free/png-256/bitcoin-3629833-3030592.png"}></Image></div><div className="col-span-2 my-2">0.001 BTC</div></div>
