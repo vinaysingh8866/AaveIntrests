@@ -18,19 +18,21 @@ const DAI_TOKEN_ADDRESS = "0x6b175474e89094c44da98b954eedeac495271d0f";
 
 const Home = () => {
   let provider;
+  const [balance, setBalance] = useState("0");
   async function test(){
     provider = new ethers.providers.Web3Provider(window.ethereum)
     const add = await provider.send("eth_requestAccounts", []);
     const network = await provider.getNetwork()
-    const bal = await provider.getBalance("0x98f9694D9c7b09b8e08B5C827d0D6177eEdD61e9")
+    const signer = provider.getSigner();
+    const bal = await provider.getBalance(signer.getAddress())
+    setBalance(ethers.utils.formatEther(bal.toString()))
     console.log(network)
     console.log(ethers.utils.formatEther(bal.toString()))
   }
   
   
   useEffect(() => {
-    
-    
+   test() 
   })
 
   return (
@@ -85,6 +87,7 @@ const Home = () => {
             <div>
             
             </div>
+            {balance}
           </div>
           
           <div className="bg-pink-100 shadow-lg row-span-3 rounded-md p-4" style={{height:'66vh'}}>
