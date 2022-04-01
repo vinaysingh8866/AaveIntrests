@@ -20,7 +20,7 @@ const Balances = ({chainId,provider}) => {
             {
                 ar.map((x, i) =>{  
                     console.log(i)
-                    return <TokenBalance provider={provider} tokenAddress={x} key={i}></TokenBalance>
+                    return <TokenBalance tokenAddress={x} key={i}></TokenBalance>
                 })
             }
             </ul>
