@@ -13,6 +13,7 @@ import { text } from "stream/consumers";
 import Addresses from "../adresses";
 import { Web3Provider } from "@ethersproject/providers";
 import Balances from "../components/Balances";
+import InterestMapper from "../components/IntrestMapper";
 
 const DAI_TOKEN_ADDRESS = "0x6b175474e89094c44da98b954eedeac495271d0f";
 
@@ -21,10 +22,12 @@ const DAI_TOKEN_ADDRESS = "0x6b175474e89094c44da98b954eedeac495271d0f";
 
 const Home = () => {
   let provider:Web3Provider;
+  
   let balancesView;
   const [balance, setBalance] = useState("0");
   const [chainId, setChainId] = useState(0);
   const [coinAdd, setCoinAdd] = useState([]);
+  
   async function test(){
     provider = new ethers.providers.Web3Provider(window.ethereum)
     const add = await provider.send("eth_requestAccounts", []);
@@ -112,6 +115,9 @@ const Home = () => {
         </div>
         <div className="m-2 col-span-2 row-span-2 rounded-2xl bg-pink-50 shadow-sm text-center">
             Top Protocols
+            <div>
+            <InterestMapper chainId={chainId}></InterestMapper>
+            </div>
         </div>
       </div>
       </main>

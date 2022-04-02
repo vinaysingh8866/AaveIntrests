@@ -21,7 +21,7 @@ const TokenBalance = ({ tokenAddress }) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer =  provider.getSigner();
     const contract = new Contract(tokenAddress, ERC20, provider);
-    const balance = contract.balanceOf(signer.getAddress());
+    const balance =  contract.balanceOf(signer.getAddress());
     const symbol = contract.symbol()
     balance.then((res) => {
       setData(res.toString())
@@ -30,7 +30,6 @@ const TokenBalance = ({ tokenAddress }) => {
     symbol.then((res) =>{
       setSym(res.toString())
     })
-
   }, [])
 
 
