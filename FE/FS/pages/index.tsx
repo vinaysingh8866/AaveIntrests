@@ -10,6 +10,10 @@ import useContract from "../hooks/useContract";
 import useEagerConnect from "../hooks/useEagerConnect";
 import { ethers } from "ethers";
 import { text } from "stream/consumers";
+import Addresses from "../adresses";
+import { Web3Provider } from "@ethersproject/providers";
+import Balances from "../components/Balances";
+import InterestMapper from "../components/IntrestMapper";
 
 const DAI_TOKEN_ADDRESS = "0x6b175474e89094c44da98b954eedeac495271d0f";
 
@@ -17,20 +21,29 @@ const DAI_TOKEN_ADDRESS = "0x6b175474e89094c44da98b954eedeac495271d0f";
 
 
 const Home = () => {
-  let provider;
+  let provider:Web3Provider;
+  
+  let balancesView;
+  const [balance, setBalance] = useState("0");
+  const [chainId, setChainId] = useState(0);
+  const [coinAdd, setCoinAdd] = useState([]);
+  
   async function test(){
     provider = new ethers.providers.Web3Provider(window.ethereum)
     const add = await provider.send("eth_requestAccounts", []);
     const network = await provider.getNetwork()
-    const bal = await provider.getBalance("0x98f9694D9c7b09b8e08B5C827d0D6177eEdD61e9")
-    console.log(network)
-    console.log(ethers.utils.formatEther(bal.toString()))
+    const signer = provider.getSigner();
+    const bal = await provider.getBalance(signer.getAddress())
+    setBalance(ethers.utils.formatEther(bal.toString()))
+    setChainId(network.chainId)
+    console.log(typeof(Addresses[chainId]))
+    //setCoinAdd(Addresses[chainId])
   }
   
   
   useEffect(() => {
-    
-    
+   test() 
+   
   })
 
   return (
@@ -85,17 +98,9 @@ const Home = () => {
             <div>
             
             </div>
+            {balance}
           </div>
-          
-          <div className="bg-pink-100 shadow-lg row-span-3 rounded-md p-4" style={{height:'66vh'}}>
-            Balances
-            <div className="grid grid-flow-row gap-4">
-              <div className="text-center content-center grid grid-cols-3 gap-2"><div><Image className="max-w-sm p-4 rounded-full"  height={40} width={40} alt="" src={"https://cdn.iconscout.com/icon/free/png-256/bitcoin-3629833-3030592.png"}></Image></div><div className="col-span-2 my-2">0.001 BTC</div></div>
-              <div className="text-center content-center grid grid-cols-3 gap-2"><div><Image className="max-w-sm p-4 rounded-full"  height={40} width={40} alt="" src={"https://cdn.iconscout.com/icon/free/png-256/bitcoin-3629833-3030592.png"}></Image></div><div className="col-span-2 my-2">0.001 BTC</div></div>
-              <div className="text-center content-center grid grid-cols-3 gap-2"><div><Image className="max-w-sm p-4 rounded-full"  height={40} width={40} alt="" src={"https://cdn.iconscout.com/icon/free/png-256/bitcoin-3629833-3030592.png"}></Image></div><div className="col-span-2 my-2">0.001 BTC</div></div>
-              <div className="text-center content-center grid grid-cols-3 gap-2"><div><Image className="max-w-sm p-4 rounded-full"  height={40} width={40} alt="" src={"https://cdn.iconscout.com/icon/free/png-256/bitcoin-3629833-3030592.png"}></Image></div><div className="col-span-2 my-2">0.001 BTC</div></div>
-            </div>
-          </div>
+          <Balances chainId={chainId} provider={provider}></Balances>
         </div>
         </div>
         <div className="col-span-2 row-span-1  w-full h-full">
@@ -110,6 +115,9 @@ const Home = () => {
         </div>
         <div className="m-2 col-span-2 row-span-2 rounded-2xl bg-pink-50 shadow-sm text-center">
             Top Protocols
+            <div>
+            <InterestMapper chainId={chainId}></InterestMapper>
+            </div>
         </div>
       </div>
       </main>

@@ -1,4 +1,4 @@
-import type { BigNumberish } from "@ethersproject/bignumber";
+import type { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { formatUnits } from "@ethersproject/units";
 
 export function shortenHex(hex: string, length = 4) {
@@ -32,7 +32,7 @@ export function formatEtherscanLink(
 }
 
 export const parseBalance = (
-  value: BigNumberish,
+  value: BigNumber,
   decimals = 18,
   decimalsToDisplay = 3
 ) => parseFloat(formatUnits(value, decimals)).toFixed(decimalsToDisplay);
