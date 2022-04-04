@@ -1,6 +1,8 @@
 import { Contract, ethers } from "ethers";
 import { useEffect, useState } from "react";
 import ERC20 from '../contracts/ERC20.json'
+import io from 'socket.io-client';
+
 
 type TokenBalanceProps = {
   tokenAddress: string;
@@ -14,9 +16,17 @@ const Interest = ({ chainId,tokenAddress }) => {
   const [intrestBorrow, setIntrestBorrow] = useState(null)
   const [intrestLending, setInterestLending] = useState(null)
   const [userBal, setUserBal] = useState(null) 
+  const [socket, setSocket] = useState(null);
+
+
+  const getData = async (address:String) => {
+    
+    
+    }
 
   useEffect(() => {
-    
+    const newSocket = io(`http://${window.location.hostname}:8080`);
+    setSocket(newSocket);
     let provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer =  provider.getSigner();
     const contract = new Contract(tokenAddress, ERC20, provider);

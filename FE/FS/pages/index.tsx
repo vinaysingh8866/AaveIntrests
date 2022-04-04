@@ -77,11 +77,9 @@ const Home = () => {
               </div>
               <div className="hidden sm:block sm:ml-6">
                 <div className="flex space-x-4 text-black">
-                
                 </div>
               </div> 
             </div>
-           
           </div>
         </div>
       </nav>
