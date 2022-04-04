@@ -18,9 +18,22 @@ const InterestMapper = ({chainId}) => {
 
         <div className="grid grid-flow-row gap-4">
             <ul>
+            <div className="flex flex-nowrap  space-y-5" >
+                <div className="w-32 my-5" style={{'marginLeft':'10%'}}>
+                    Coin
+                </div>
+                <div className=" w-32 " style={{'marginLeft':'10%'}}>
+                    Borrow Intrest
+                </div>
+                <div className=" w-32 " style={{'marginLeft':'10%'}}>
+                    Lending Intrest
+                </div>
+                <div className=" w-32 " style={{'marginLeft':'10%'}}>
+                    Balance
+                </div>
+            </div>
             {
                 ar.map((x, i) =>{  
-                    
                     return <Interest chainId={chainId} tokenAddress={x} key={i}></Interest>
                 })
             }
