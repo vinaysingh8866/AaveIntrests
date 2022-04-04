@@ -25,7 +25,7 @@ const TokenBalance = ({ tokenAddress }) => {
     const symbol = contract.symbol()
     balance.then((res) => {
       setData(res.toString())
-      console.log("res")
+      
     })
     symbol.then((result) => {
       setSym(result.toString())

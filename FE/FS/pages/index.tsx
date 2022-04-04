@@ -36,7 +36,6 @@ const Home = () => {
     const bal = await provider.getBalance(signer.getAddress())
     setBalance(ethers.utils.formatEther(bal.toString()))
     setChainId(network.chainId)
-    console.log(typeof(Addresses[chainId]))
     //setCoinAdd(Addresses[chainId])
   }
   
@@ -77,11 +76,9 @@ const Home = () => {
               </div>
               <div className="hidden sm:block sm:ml-6">
                 <div className="flex space-x-4 text-black">
-                
                 </div>
               </div> 
             </div>
-           
           </div>
         </div>
       </nav>

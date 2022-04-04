@@ -8,6 +8,7 @@ import TokenBalance from "./TokenBalance";
 
 const Balances = ({chainId,provider}) => {   
     let ar = []; 
+
     if(chainId!=0){
         ar = Object.values(Addresses[chainId]) 
     }
@@ -19,7 +20,7 @@ const Balances = ({chainId,provider}) => {
             <ul>
             {
                 ar.map((x, i) =>{  
-                    console.log(i)
+                    
                     return <TokenBalance tokenAddress={x} key={i}></TokenBalance>
                 })
             }
