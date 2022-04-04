@@ -6,7 +6,9 @@ const intrestsSchema = new mongoose.Schema({
         required: true
     },
     symbl: String,
-    rateData: []
+    borrowRateData: [],
+    lendingRateData: [],
+    lastAdded: Date
 });
 
 module.exports = intrestsSchema;

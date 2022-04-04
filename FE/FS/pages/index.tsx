@@ -36,7 +36,6 @@ const Home = () => {
     const bal = await provider.getBalance(signer.getAddress())
     setBalance(ethers.utils.formatEther(bal.toString()))
     setChainId(network.chainId)
-    console.log(typeof(Addresses[chainId]))
     //setCoinAdd(Addresses[chainId])
   }
   

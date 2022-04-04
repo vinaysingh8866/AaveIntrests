@@ -6,7 +6,7 @@ const http = require("http"),
 
 const restaurantSchema = require('./models/Restaurant');
 const intrestsSchema = require('./models/Intrests');
-const connectionString = "mongodb+srv://vinay:HmmQ5jlIJ6dfHlCY@cluster0.4xl4w.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const connectionString = "mongodb://localhost:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000" //"mongodb+srv://vinay:HmmQ5jlIJ6dfHlCY@cluster0.4xl4w.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
 mongoose.connect(connectionString, { useNewUrlParser: true })
     .then(() => { console.log("Mongoose connected sucessfully") },
@@ -60,6 +60,13 @@ ioServer.on("connection", function(socket) {
         console.log("Disconnected...");
     });
 
+    socket.on("set-interest", function(address, symbl) {
+
+    })
+
+    socket.on("get-interest", function(address) {
+
+    })
     socket.on("get-data", () => {
         console.log("server - get-data called");
 

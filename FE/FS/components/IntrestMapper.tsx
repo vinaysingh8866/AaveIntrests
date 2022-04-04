@@ -14,13 +14,13 @@ const InterestMapper = ({chainId}) => {
     }
     
     return (
-        <div className="bg-pink-100 shadow-lg row-span-3 rounded-md p-4" style={{height:'66vh'}}>
+        <div className="bg-pink-100 shadow-lg row-span-3 rounded-md p-4 overflow-scroll" style={{height:'55vh'}}>
 
         <div className="grid grid-flow-row gap-4">
             <ul>
             {
                 ar.map((x, i) =>{  
-                    console.log(i)
+                    
                     return <Interest chainId={chainId} tokenAddress={x} key={i}></Interest>
                 })
             }
