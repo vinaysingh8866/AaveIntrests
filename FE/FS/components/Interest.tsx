@@ -60,14 +60,38 @@ const Interest = ({ chainId,tokenAddress }) => {
             console.log(err)
         });
     }
+
+    if(chainId=="1"){
+        //0x057835Ad21a177dbdd3090bB1CAE03EaCF78Fc6d
+        let contr = new ethers.Contract("0x057835Ad21a177dbdd3090bB1CAE03EaCF78Fc6d", abi, provider);
+        const bal = contr.getReserveData(tokenAddress);
+        const userBalance = contr.getUserReserveData(tokenAddress, signer.getAddress());
+        userBalance.then((result) => {
+            setUserBal(result['currentATokenBalance'].toString())
+        }).catch((err) => {
+            
+        });
+        bal.then((result) => {
+            for(const x in result){
+                console.log(x)
+            }
+            setInterestLending(result['liquidityRate'].toString() / 1e25)
+            setIntrestBorrow(result['variableBorrowRate'].toString() / 1e25)
+        }).catch((err) => {
+            console.log(err)
+        });
+    }
     
     balance.then((res) => {
       setData(res.toString())
       console.log("res")
     })
-    symbol.then((res) =>{
-      setSym(res.toString())
-    })
+    //setSym(res.toString())
+    symbol.then((result) => {
+        setSym(result.toString())
+    }).catch((err) => {
+        console.log("error")
+    });
   }, [])
 
 

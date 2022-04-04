@@ -27,9 +27,12 @@ const TokenBalance = ({ tokenAddress }) => {
       setData(res.toString())
       console.log("res")
     })
-    symbol.then((res) =>{
-      setSym(res.toString())
-    })
+    symbol.then((result) => {
+      setSym(result.toString())
+    }).catch((err) => {
+      console.log(err, tokenAddress)
+    });
+    
   }, [])
 
 
