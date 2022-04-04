@@ -28,10 +28,7 @@ const Interest = ({ chainId,tokenAddress }) => {
     const contract = new Contract(tokenAddress, ERC20, provider);
     const symbol = contract.symbol()
 
-    
-    const providerPoly = new ethers.providers.JsonRpcProvider("https://polygon-rpc.com");
-    
-    if(chainId == "137"){    
+    function getData(provider, signer, cAdd){
         let contr = new ethers.Contract(cAdd, abi, provider);
         const bal = contr.getReserveData(tokenAddress);
         const userBalance = contr.getUserReserveData(tokenAddress, signer.getAddress());
@@ -41,49 +38,26 @@ const Interest = ({ chainId,tokenAddress }) => {
             console.log(err) 
         });
         bal.then((result) => {
-            setInterestLending(result['liquidityRate'].toString() / 1e25)
-            setIntrestBorrow(result['variableBorrowRate'].toString() / 1e25)
+            setInterestLending(Math.round(result['liquidityRate'].toString() / 1e25))
+            setIntrestBorrow(Math.round(result['variableBorrowRate'].toString() / 1e25))
         }).catch((err) => {
             console.log(err)
         });
+      }
+    const providerPoly = new ethers.providers.JsonRpcProvider("https://polygon-rpc.com");
+    
+    if(chainId == "137"){    
+        getData(provider, signer, cAdd)
     }
     if(chainId=="250"){
 
     }
     if(chainId=="43114"){
-        let contr = new ethers.Contract("0x65285E9dfab318f57051ab2b139ccCf232945451", abi, provider);
-        const bal = contr.getReserveData(tokenAddress);
-        const userBalance = contr.getUserReserveData(tokenAddress, signer.getAddress());
-        userBalance.then((result) => {
-            setUserBal(result['currentATokenBalance'].toString())
-        }).catch((err) => {
-            
-        });
-        bal.then((result) => {
-            setInterestLending(result['liquidityRate'].toString() / 1e25)
-            setIntrestBorrow(result['variableBorrowRate'].toString() / 1e25)
-        }).catch((err) => {
-            console.log(err)
-        });
+        getData(provider, signer, "0x65285E9dfab318f57051ab2b139ccCf232945451")
     }
 
     if(chainId=="1"){
-        //0x057835Ad21a177dbdd3090bB1CAE03EaCF78Fc6d
-        let contr = new ethers.Contract("0x057835Ad21a177dbdd3090bB1CAE03EaCF78Fc6d", abi, provider);
-        const bal = contr.getReserveData(tokenAddress);
-        const userBalance = contr.getUserReserveData(tokenAddress, signer.getAddress());
-        userBalance.then((result) => {
-            setUserBal(result['currentATokenBalance'].toString())
-        }).catch((err) => {
-            
-        });
-        bal.then((result) => {
-            
-            setInterestLending(result['liquidityRate'].toString() / 1e25)
-            setIntrestBorrow(result['variableBorrowRate'].toString() / 1e25)
-        }).catch((err) => {
-            console.log(err)
-        });
+        getData(provider, signer, "0x057835Ad21a177dbdd3090bB1CAE03EaCF78Fc6d")
     }
     
     symbol.then((result) => {
@@ -91,7 +65,7 @@ const Interest = ({ chainId,tokenAddress }) => {
     }).catch((err) => {
         console.log("error")
     });
-  }, [])
+  }, [chainId, tokenAddress])
 
 
   // if (isLoading) return <p>Loading...</p>
@@ -103,13 +77,13 @@ const Interest = ({ chainId,tokenAddress }) => {
             {sym}
         </div>
         <div className=" w-32 " style={{'marginLeft':'10%'}}>
-            B-{intrestBorrow}
+            {intrestBorrow}%
         </div>
         <div className=" w-32 " style={{'marginLeft':'10%'}}>
-            L-{intrestLending}
+            {intrestLending}%
         </div>
         <div className=" w-32 " style={{'marginLeft':'10%'}}>
-            {userBal}
+            {userBal}{sym}
         </div>
     </div>
   );
