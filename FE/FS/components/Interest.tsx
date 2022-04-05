@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import ERC20 from '../contracts/ERC20.json'
 import io from 'socket.io-client';
 
-
 type TokenBalanceProps = {
   tokenAddress: string;
   symbol: string;
@@ -50,7 +49,8 @@ const Interest = ({ chainId,tokenAddress }) => {
         getData(provider, signer, cAdd)
     }
     if(chainId=="250"){
-
+        
+       // create phantom getData()
     }
     if(chainId=="43114"){
         getData(provider, signer, "0x65285E9dfab318f57051ab2b139ccCf232945451")
