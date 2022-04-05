@@ -1,72 +1,84 @@
 const mongoose = require('mongoose')
-const http = require("http"),
-    url = require("url"),
-    fs = require("fs"),
-    io = require("socket.io");
+const express = require('express');
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
+var cors = require('cors')
+app.use(cors)
 
-const restaurantSchema = require('./models/Restaurant');
+const io = require("socket.io")(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
+
 const intrestsSchema = require('./models/Intrests');
+const messageSchema = require('./models/Message');
 const connectionString = "mongodb://localhost:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000" //"mongodb+srv://vinay:HmmQ5jlIJ6dfHlCY@cluster0.4xl4w.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
 mongoose.connect(connectionString, { useNewUrlParser: true })
     .then(() => { console.log("Mongoose connected sucessfully") },
         errot => { console.log("error" + errot) })
 
-
-
-
-const server = http.createServer(function(req, res) {
-    var path = url.parse(req.url).pathname;
-    switch (path) {
-        case "/":
-            // fs.readFile(__dirname + "/index.html", function(err, data) {
-            //     if (err) return send404(res);
-            //     res.writeHead(200, {
-            //         "Content-Type": path == "json.js" ? "text/javascript" : "text/html"
-            //     });
-            //     res.write(data, "utf8");
-            //     res.end();
-            // });
-            break;
-
-        default:
-            send404(res);
-    }
-});
-const send404 = function(res) {
-    res.writeHead(404);
-    res.write("404");
-    res.end();
-};
-
 const PORT = 8080;
 server.listen(PORT, () => console.log(`server started on localhost:${PORT}`));
 
 
-const ioServer = io.listen(server);
-
 const intrests = mongoose.model('intrests', intrestsSchema)
-
-ioServer.on("connection", function(socket) {
+const message = mongoose.model('message', messageSchema)
+io.on("connection", async function(socket) {
 
     console.log("Connection accepted.");
+    const _address = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"
+
 
     socket.on("message", function(message) {
         console.log(`Recieved message: ${message} - from client`);
         socket.emit("msgreceived");
     });
 
-    socket.on("disconnect", function() {
+    socket.on("disconnect", async function() {
         console.log("Disconnected...");
     });
 
-    socket.on("set-interest", function(address, symbl) {
+    socket.on("set-interest", async function(address, borrowRateData, lendingRateData) {
+        const query = await intrests.findOne({ address: address })
+            //console.log(query)
 
+        if (query == null) {
+
+            const intrestTemp = {
+                address: address,
+                borrowRateData: [borrowRateData],
+                lendingRateData: [lendingRateData],
+                lastAdded: new Date().toLocaleString()
+            }
+
+            const intrestAdd = intrests.create(intrestTemp)
+            console.log("added")
+        }
+    })
+
+    socket.on("get-comments", async function() {
+        const query = await message.find({})
+        socket.emit('message', query)
+            // for (const k in query) {
+            //     //console.log(query[k]['message'])
+            // }
+            //console.log(query)
+    })
+
+    socket.on("add-comment", async function(_address, _message) {
+        const msg = await message.create({ "address": _address, "message": _message })
+        console.log("message added")
+            // console.log(msg)
     })
 
     socket.on("get-interest", function(address) {
 
     })
+
     socket.on("get-data", () => {
         console.log("server - get-data called");
 

@@ -5,7 +5,6 @@ const intrestsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    symbl: String,
     borrowRateData: [],
     lendingRateData: [],
     lastAdded: Date

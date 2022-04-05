@@ -1,43 +1,34 @@
-import { useWeb3React } from "@web3-react/core";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import Account from "../components/Account";
-import ETHBalance from "../components/ETHBalance";
-import TokenBalance from "../components/TokenBalance";
-import useContract from "../hooks/useContract";
-import useEagerConnect from "../hooks/useEagerConnect";
 import { ethers } from "ethers";
-import { text } from "stream/consumers";
-import Addresses from "../adresses";
 import { Web3Provider } from "@ethersproject/providers";
 import Balances from "../components/Balances";
 import InterestMapper from "../components/IntrestMapper";
-
-const DAI_TOKEN_ADDRESS = "0x6b175474e89094c44da98b954eedeac495271d0f";
-
+import io from 'socket.io-client';
+import Messages from "../components/Messages";
 
 
 
 const Home = () => {
   let provider:Web3Provider;
   
-  let balancesView;
   const [balance, setBalance] = useState("0");
   const [chainId, setChainId] = useState(0);
-  const [coinAdd, setCoinAdd] = useState([]);
   
+  const [signerAddress, setSignerAddress] = useState("")
   async function test(){
     provider = new ethers.providers.Web3Provider(window.ethereum)
     const add = await provider.send("eth_requestAccounts", []);
     const network = await provider.getNetwork()
     const signer = provider.getSigner();
+    setSignerAddress(await signer.getAddress())
     const bal = await provider.getBalance(signer.getAddress())
     setBalance(ethers.utils.formatEther(bal.toString()))
     setChainId(network.chainId)
     //setCoinAdd(Addresses[chainId])
   }
+
+  
   
   
   useEffect(() => {
@@ -106,7 +97,9 @@ const Home = () => {
               Total USD
             </div>
             <div className="bg-pink-50 rounded-2xl h-full w-full m-2 text-center" style={{height:'28vh'}}>
-              Defi Stake
+              
+             
+              <Messages signerAddress={signerAddress}></Messages>
             </div>
           </div>
         </div>

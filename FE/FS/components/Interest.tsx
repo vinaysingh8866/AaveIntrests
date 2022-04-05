@@ -15,34 +15,27 @@ const Interest = ({ chainId,tokenAddress }) => {
   const [intrestLending, setInterestLending] = useState(null)
   const [userBal, setUserBal] = useState(null) 
   const [socket, setSocket] = useState(null);
-
-
+  const [socetSet, setSocketSet] = useState(false)
   
 
   useEffect(() => {
-    const newSocket = io(`http://${window.location.hostname}:8080`);
-    setSocket(newSocket);
     let provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer =  provider.getSigner();
     const contract = new Contract(tokenAddress, ERC20, provider);
     const symbol = contract.symbol()
 
-    function getData(provider, signer, cAdd){
+    async function getData(provider, signer, cAdd){
+        const newSocket = io(`http://${window.location.hostname}:8080`);
         let contr = new ethers.Contract(cAdd, abi, provider);
-        const bal = contr.getReserveData(tokenAddress);
-        const userBalance = contr.getUserReserveData(tokenAddress, signer.getAddress());
-        userBalance.then((result) => {
-            setUserBal(result['currentATokenBalance'].toString())
-        }).catch((err) => {
-            console.log(err) 
-        });
-        bal.then((result) => {
-            setInterestLending(Math.round(result['liquidityRate'].toString() / 1e25))
-            setIntrestBorrow(Math.round(result['variableBorrowRate'].toString() / 1e25))
-        }).catch((err) => {
-            console.log(err)
-        });
-      }
+        const bal = await contr.getReserveData(tokenAddress);
+        const userBalance = await contr.getUserReserveData(tokenAddress, signer.getAddress());
+        setUserBal(userBalance['currentATokenBalance'].toString())
+        setInterestLending(Math.round(bal['liquidityRate'].toString() / 1e25))
+        setIntrestBorrow(Math.round(bal['variableBorrowRate'].toString() / 1e25))
+        //newSocket.emit("set-interest",tokenAddress, intrestBorrow, intrestLending)
+        //console.log("data emmitted")
+        //newSocket.emit("message","testsocket") 
+    }
     const providerPoly = new ethers.providers.JsonRpcProvider("https://polygon-rpc.com");
     
     if(chainId == "137"){    
@@ -65,7 +58,7 @@ const Interest = ({ chainId,tokenAddress }) => {
     }).catch((err) => {
         console.log("error")
     });
-  }, [chainId, tokenAddress])
+  }, [chainId, intrestBorrow, intrestLending, sym, tokenAddress])
 
 
   // if (isLoading) return <p>Loading...</p>
@@ -76,6 +69,7 @@ const Interest = ({ chainId,tokenAddress }) => {
         <div className="w-32 my-5" style={{'marginLeft':'10%'}}>
             {sym}
         </div>
+        
         <div className=" w-32 " style={{'marginLeft':'10%'}}>
             {intrestBorrow}%
         </div>
