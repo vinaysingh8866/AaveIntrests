@@ -16,9 +16,7 @@ const Interest = ({ chainId,tokenAddress }) => {
   const [intrestLending, setInterestLending] = useState(null)
   const [userBal, setUserBal] = useState(null) 
   const [socket, setSocket] = useState(null);
-  
   const [socetSet, setSocketSet] = useState(false)
-
   
 
   useEffect(() => {
@@ -35,12 +33,10 @@ const Interest = ({ chainId,tokenAddress }) => {
         setUserBal(userBalance['currentATokenBalance'].toString())
         setInterestLending(Math.round(bal['liquidityRate'].toString() / 1e25))
         setIntrestBorrow(Math.round(bal['variableBorrowRate'].toString() / 1e25))
-        
-        newSocket.emit("set-interest",tokenAddress, intrestBorrow, intrestLending)
-        console.log("data emmitted")
-        newSocket.emit("message","testsocket") 
-    
-      }
+        //newSocket.emit("set-interest",tokenAddress, intrestBorrow, intrestLending)
+        //console.log("data emmitted")
+        //newSocket.emit("message","testsocket") 
+    }
     const providerPoly = new ethers.providers.JsonRpcProvider("https://polygon-rpc.com");
     
     if(chainId == "137"){    
