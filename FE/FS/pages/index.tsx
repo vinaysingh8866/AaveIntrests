@@ -19,6 +19,7 @@ const Home = () => {
   const [arOfBal, setArOfBal] = useState({}) 
   const [signerAddress, setSignerAddress] = useState("")
   const [arOfPrice, setArOfPrice] = useState({})
+  const [usdBal, setUsdBal] = useState(0)
   async function test(){
     provider = new ethers.providers.Web3Provider(window.ethereum)
     const add = await provider.send("eth_requestAccounts", []);
@@ -31,11 +32,17 @@ const Home = () => {
   }
 
   
-  
+  function calculateTotal(){
+    let total = 0
+    for(const x in arOfPrice){
+      total = (total + arOfBal[x]*Number(arOfPrice[x]))
+    }
+    setUsdBal(total)
+  }
   
   useEffect(() => {
-   test() 
-   
+    test()
+    calculateTotal()
   })
 
   return (
@@ -44,7 +51,6 @@ const Home = () => {
         <title>DeFi</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <header>
       <nav className="bg-white shadow-md">
         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -92,11 +98,9 @@ const Home = () => {
           <div className="flex justify-around">
             <div className="bg-pink-50 shadow-md rounded-2xl h-full w-full m-2 text-center" style={{height:'28vh'}}>
               Total USD
-              <ul>
-              {Object.entries(arOfPrice).map(([key, value]) => (
-                <li key={key}>{arOfBal[key]*Number(value)}</li>
-              ))}
-              </ul>
+              <div>
+                {usdBal}
+              </div>
               <BalanceMapper chainId={chainId} arOfBal={arOfBal} arOfPrice={arOfPrice} setArOfPrice={setArOfPrice}></BalanceMapper>
              
             </div>
