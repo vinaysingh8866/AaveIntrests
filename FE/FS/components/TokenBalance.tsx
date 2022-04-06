@@ -30,7 +30,10 @@ const TokenBalance = ({ tokenAddress, arOfBal, setArOfBal }) => {
         const val = ethers.utils.formatUnits(res.toString(), resd.toString())
         setData(val)
         let artmp = arOfBal
-        artmp[tokenAddress] = ethers.utils.formatUnits(res.toString(), resd.toString())
+        if(res.toString()!=NaN){
+          artmp[tokenAddress] = ethers.utils.formatUnits(res.toString(), resd.toString())
+        }
+        
         })
       
     })
