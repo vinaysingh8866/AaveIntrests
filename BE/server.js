@@ -25,11 +25,11 @@ const PORT = 8080;
 server.listen(PORT, () => console.log(`server started on localhost:${PORT}`));
 
 
-const intrests = mongoose.model('intrests', intrestsSchema)
-const message = mongoose.model('message', messageSchema)
+const intrests = mongoose.model('Intrests', intrestsSchema)
+const message = mongoose.model('Message', messageSchema)
+    // await intrests.deleteMany({})
+    // await message.deleteMany({})
 io.on("connection", async function(socket) {
-
-    console.log("Connection accepted.");
     const _address = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"
 
 
@@ -42,56 +42,58 @@ io.on("connection", async function(socket) {
         console.log("Disconnected...");
     });
 
-    socket.on("set-interest", async function(address, borrowRateData, lendingRateData) {
-        const query = await intrests.findOne({ address: address })
-            //console.log(query)
+
+    //donsent update based on time
+    socket.on("set-interest", async function(_address, borrowRateData, lendingRateData) {
+        const query = await intrests.findOne({ address: _address })
+        console.log(query)
+        console.log(borrowRateData, lendingRateData)
 
         if (query == null) {
 
             const intrestTemp = {
-                address: address,
+                address: _address,
                 borrowRateData: [borrowRateData],
                 lendingRateData: [lendingRateData],
                 lastAdded: new Date().toLocaleString()
             }
 
             const intrestAdd = intrests.create(intrestTemp)
-            console.log("added")
+                //console.log("added")
+        } else {
+            const past = new Date(query['lastAdded'])
+            const present = new Date()
+            const timePassedHr = Math.abs(present - past) / 3.6e+6
+            console.log(query['lastAdded'], new Date().toLocaleString())
+            console.log(timePassedHr)
+            if (timePassedHr > 0.1) {
+                console.log('Time to update')
+                let lendingAr = query['lendingRateData']
+                lendingAr.push(lendingRateData)
+                let borrowAr = query['borrowRateData']
+                borrowAr.push(borrowRateData)
+                const filter = { address: _address }
+                const update = { lendingRateData: lendingAr, borrowRateData: borrowAr, lastAdded: new Date().toLocaleString() }
+
+                let doc = intrests.findOneAndUpdate(filter, update);
+                //const intrestAdd = intrests.create(intrestTemp)
+                //console.log("added")
+            }
         }
-    })
 
-    socket.on("get-comments", async function() {
-        const query = await message.find({})
-        socket.emit('message', query)
-            // for (const k in query) {
-            //     //console.log(query[k]['message'])
-            // }
-            //console.log(query)
-    })
-
-    socket.on("add-comment", async function(_address, _message) {
-        const msg = await message.create({ "address": _address, "message": _message })
-        console.log("message added")
-            // console.log(msg)
     })
 
     socket.on("get-interest", function(address) {
 
     })
 
-    socket.on("get-data", () => {
-        console.log("server - get-data called");
+    socket.on("get-comments", async function() {
+        const query = await message.find({})
+        socket.emit('message', query)
+    })
 
-    });
-
-    // socket.on('get-orders', () => {
-    //     _order.find((error, document) => {
-    //         if (error) {
-    //             console.log(error)
-    //         } else {
-    //             console.log(document)
-    //             socket.emit('order-data', document)
-    //         }
-    //     })
-    // })
+    socket.on("add-comment", async function(_address, _message) {
+        const msg = await message.create({ "address": _address, "message": _message })
+            //console.log("message added")
+    })
 });

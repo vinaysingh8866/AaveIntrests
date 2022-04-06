@@ -11,7 +11,7 @@ type TokenBalanceProps = {
 };
 
 
-const TokenBalance = ({ tokenAddress }) => {
+const TokenBalance = ({ tokenAddress, arOfBal, setArOfBal }) => {
   const [data, setData] = useState(null)
   const [sym, setSym] = useState(null)
   const [isLoading, setLoading] = useState(false)
@@ -25,7 +25,8 @@ const TokenBalance = ({ tokenAddress }) => {
     const symbol = contract.symbol()
     balance.then((res) => {
       setData(res.toString())
-      
+      let artmp = arOfBal
+      artmp[tokenAddress] = res.toString()
     })
     symbol.then((result) => {
       setSym(result.toString())
