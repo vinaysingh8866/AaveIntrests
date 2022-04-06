@@ -29,9 +29,9 @@ const TokenBalance = ({ tokenAddress, arOfBal, setArOfBal }) => {
       decimals.then((resd)=>{
         const val = ethers.utils.formatUnits(res.toString(), resd.toString())
         setData(val)
-      let artmp = arOfBal
-      artmp[tokenAddress] = res.toString()
-      })
+        let artmp = arOfBal
+        artmp[tokenAddress] = ethers.utils.formatUnits(res.toString(), resd.toString())
+        })
       
     })
     symbol.then((result) => {

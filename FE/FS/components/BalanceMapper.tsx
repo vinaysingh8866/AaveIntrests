@@ -8,9 +8,11 @@ import TotalUSD from "./TotalUSD";
 
 
 
-const BalanceMapper = ({chainId , arOfBal, arOfPrice, setArOfPrice}) => {   
+const BalanceMapper = ({chainId , arOfBal, arOfPrice, setArOfPrice, calculateTotal}) => {   
     let ar = []; 
-     
+    function calculate(){
+        calculateTotal()
+     }
     //const [arOf]
     if(chainId!=0){
         ar = Object.values(Addresses[chainId]) 
@@ -31,7 +33,12 @@ const BalanceMapper = ({chainId , arOfBal, arOfPrice, setArOfPrice}) => {
             
             {
                 ar.map((x, i) =>{  
-                    return <TotalUSD chainId={chainId} tokenAddress={x} key={i} arOfPrice={arOfPrice} setArOfPrice={setArOfPrice} ></TotalUSD>
+                    return <TotalUSD chainId={chainId} 
+                                    tokenAddress={x} 
+                                    key={i} 
+                                    arOfPrice={arOfPrice} 
+                                    setArOfPrice={setArOfPrice} 
+                                    calculateTotal={calculate} ></TotalUSD>    
                 })
             }
             </div>

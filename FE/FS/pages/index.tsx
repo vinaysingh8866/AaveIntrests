@@ -101,7 +101,7 @@ const Home = () => {
               <div>
                 {usdBal}
               </div>
-              <BalanceMapper chainId={chainId} arOfBal={arOfBal} arOfPrice={arOfPrice} setArOfPrice={setArOfPrice}></BalanceMapper>
+              <BalanceMapper chainId={chainId} arOfBal={arOfBal} arOfPrice={arOfPrice} setArOfPrice={setArOfPrice} calculateTotal={calculateTotal}></BalanceMapper>
              
             </div>
             <div className="bg-pink-50 shadow-md rounded-2xl h-full w-full m-2 text-center" style={{height:'28vh'}}>

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ERC20 from '../contracts/ERC20.json'
 import io from 'socket.io-client';
 import PriceAddresses from "../addressesPrices";
-const TotalUSD = ({ chainId,tokenAddress, arOfPrice, setArOfPrice }) => {
+const TotalUSD = ({ chainId,tokenAddress, arOfPrice, setArOfPrice, calculateTotal }) => {
    const [price, setPrice] = useState("")
   
 
@@ -28,6 +28,7 @@ const TotalUSD = ({ chainId,tokenAddress, arOfPrice, setArOfPrice }) => {
             ar[tokenAddress] = price.toString()
             setArOfPrice(ar)
             setPrice(price.toString())
+            calculateTotal()
         }
         
         // const bal = await contr.getReserveData(tokenAddress);
