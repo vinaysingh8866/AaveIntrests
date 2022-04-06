@@ -5,11 +5,29 @@ import { useEffect, useState } from "react";
 import useTokenBalance from "../hooks/useTokenBalance";
 import { parseBalance } from "../util";
 import ERC20 from '../contracts/ERC20.json'
+import Image from "next/image";
 type TokenBalanceProps = {
   tokenAddress: string;
   symbol: string;
 };
 
+const images = {
+  "WMATIC":"https://cryptologos.cc/logos/polygon-matic-logo.svg",
+  "MATIC":"https://cryptologos.cc/logos/polygon-matic-logo.svg",
+  "WETH":"https://cryptologos.cc/logos/ethereum-eth-logo.svg",
+  "WBTC":"https://cryptologos.cc/logos/wrapped-bitcoin-wbtc-logo.svg",
+  "DAI":"https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.svg",
+  "USDT":"https://cryptologos.cc/logos/tether-usdt-logo.svg",
+  "USDC":"https://cryptologos.cc/logos/usd-coin-usdc-logo.svg",
+  "AAVE":"https://cryptologos.cc/logos/aave-aave-logo.svg",
+  "BAL":"https://cryptologos.cc/logos/balancer-bal-logo.svg",
+  "CRV":"https://cryptologos.cc/logos/curve-dao-token-crv-logo.svg",
+  "GHST":"https://wiki.aavegotchi.com/icons/ghst.svg",
+  "LINK":"https://cryptologos.cc/logos/chainlink-link-logo.svg",
+  "SUSHI":"https://cryptologos.cc/logos/sushiswap-sushi-logo.svg",
+  
+
+}
 
 const TokenBalance = ({ tokenAddress, arOfBal, setArOfBal }) => {
   const [data, setData] = useState(null)
@@ -50,9 +68,11 @@ const TokenBalance = ({ tokenAddress, arOfBal, setArOfBal }) => {
   // if (!data) return <p>No profile data</p>
 
   return (
-    <p>
-      {`${sym} Balance`}: {data}
-    </p>
+    <div className="flex flex-nowrap content-center text-left items-center w-64" style={{"marginLeft":"30%"}}>
+      <img className="mx-4" src={images[sym]} width="20"></img>
+      <div className="overflow-hidden">{data}</div>
+       
+    </div>
   );
 };
 
