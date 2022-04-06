@@ -19,9 +19,9 @@ const pId = {
 }
 
 
-
+const provider = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
 async function getBal(address) { 
-    const provider = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
+   // const provider = new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools/');
     let contractFooBoo = new ethers.Contract(cAdd, abi, provider);
     const returnVal = await contractFooBoo.userInfo(0, add);
     const bal = ethers.utils.formatEther(returnVal["amount"].toString())
@@ -29,5 +29,8 @@ async function getBal(address) {
     const pendingBal = ethers.utils.formatEther(pendingBoo.toString())
     console.log(bal, pendingBal)
 }
-
+//TODO find BOO to USD, images of tokens, whole fantom
 getBal()
+module.exports = {
+getBal, provider
+}
