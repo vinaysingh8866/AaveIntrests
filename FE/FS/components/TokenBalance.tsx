@@ -23,10 +23,16 @@ const TokenBalance = ({ tokenAddress, arOfBal, setArOfBal }) => {
     const contract = new Contract(tokenAddress, ERC20, provider);
     const balance =  contract.balanceOf(signer.getAddress());
     const symbol = contract.symbol()
+    const decimals = contract.decimals()
+    
     balance.then((res) => {
-      setData(res.toString())
+      decimals.then((resd)=>{
+        const val = ethers.utils.formatUnits(res.toString(), resd.toString())
+        setData(val)
       let artmp = arOfBal
       artmp[tokenAddress] = res.toString()
+      })
+      
     })
     symbol.then((result) => {
       setSym(result.toString())
