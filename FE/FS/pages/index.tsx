@@ -35,7 +35,10 @@ const Home = () => {
   function calculateTotal(){
     let total = 0
     for(const x in arOfPrice){
-      total = (total + arOfBal[x]*Number(arOfPrice[x]))
+      if(!isNaN(arOfBal[x])){
+        total = (total + arOfBal[x]*Number(arOfPrice[x]))
+      }
+      
     }
     setUsdBal(total)
   }
@@ -96,10 +99,10 @@ const Home = () => {
         </div>
         <div className="col-span-2 row-span-1  w-full h-full">
           <div className="flex justify-around">
-            <div className="bg-pink-50 shadow-md rounded-2xl h-full w-full m-2 text-center" style={{height:'28vh'}}>
-              Total USD
-              <div>
-                {usdBal}
+            <div className="bg-pink-50 shadow-md rounded-2xl h-full w-full m-2 text-2xl text-center" style={{height:'28vh'}}>
+              Total Balance
+              <div className="text-center my-9 text-3xl">
+                {usdBal} USD
               </div>
               <BalanceMapper chainId={chainId} arOfBal={arOfBal} arOfPrice={arOfPrice} setArOfPrice={setArOfPrice} calculateTotal={calculateTotal}></BalanceMapper>
              

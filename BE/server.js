@@ -28,7 +28,7 @@ server.listen(PORT, () => console.log(`server started on localhost:${PORT}`));
 const intrests = mongoose.model('Intrests', intrestsSchema)
 const message = mongoose.model('Message', messageSchema)
     // await intrests.deleteMany({})
-    // await message.deleteMany({})
+message.deleteMany({})
 io.on("connection", async function(socket) {
     const _address = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"
 
