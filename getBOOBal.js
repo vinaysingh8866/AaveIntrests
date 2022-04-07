@@ -17,4 +17,4 @@ async function getAssetRate() {
     const bal = await contr.balanceOf("0x172370d5Cd63279eFa6d502DAB29171933a610AF");
     console.log(bal['variableBorrowRate'].toString() / 1e25)
 }
-getAssetRate() */
+getAssetRate() //*/
